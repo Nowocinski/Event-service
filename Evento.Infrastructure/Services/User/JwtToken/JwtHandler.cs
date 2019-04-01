@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Evento.Infrastructure.DTO;
+using Evento.Infrastructure.Extensions;
 using Evento.Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -27,7 +28,7 @@ namespace Evento.Infrastructure.Services.User.JwtToken
                 new Claim(JwtRegisteredClaimNames.UniqueName, UserId.ToString()), // Unikatowa nazwa użytkownika
                 new Claim(ClaimTypes.Role, Role),                                 // Rola użytkownika
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),// Unikalny identyfikator tokena
-                new Claim(JwtRegisteredClaimNames.Iat, now.Ticks.ToString())      // Data wydania tokena
+                new Claim(JwtRegisteredClaimNames.Iat, now.ToTimestamp().ToString())      // Data wydania tokena
             };
 
             var expires = now.AddMinutes(_jwtSettings.ExpiryInMinutes);           // Data wyczerpania tokena
@@ -49,7 +50,7 @@ namespace Evento.Infrastructure.Services.User.JwtToken
             return new JwtDTO
             {
                 Token = token,
-                Expires = expires.Ticks
+                Expires = expires.ToTimestamp()
             };
         }
     }
