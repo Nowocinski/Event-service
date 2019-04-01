@@ -60,6 +60,7 @@ namespace Evento.Api
             // Konfiguracja Jwt token
             // https://go.microsoft.com/fwlink/?linkid=845470
             // https://youtu.be/yH4GhmTPf68
+            services.AddAuthentication();
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
             services.AddIdentity<IdentityUser, IdentityRole>( option => {

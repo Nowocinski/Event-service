@@ -6,6 +6,7 @@ namespace Evento.Infrastructure.Services.User
 {
     public interface IUserService
     {
+        Task<AccountDTO> GetAccountAsync(Guid UserId);
         Task RegisterAsync(Guid UserId, string Email, string Name, string Password, string Role = "user");
         Task<TokenDTO> LoginAsync(string Email, string Password);
     }

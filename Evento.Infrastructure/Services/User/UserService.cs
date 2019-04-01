@@ -1,4 +1,5 @@
-﻿using Evento.Core.Domain;
+﻿using AutoMapper;
+using Evento.Core.Domain;
 using Evento.Core.Repositories;
 using Evento.Infrastructure.DTO;
 using Evento.Infrastructure.Services.User.JwtToken;
@@ -11,11 +12,22 @@ namespace Evento.Infrastructure.Services.User
     {
         private readonly IAccountRepository _userRepository;
         private readonly IJwtHandler _jwtHandler;
+        private readonly IMapper _mapper;
 
-        public UserService(IAccountRepository userRepository, IJwtHandler jwtHandler)
+        public UserService(IAccountRepository userRepository, IJwtHandler jwtHandler, IMapper mapper)
         {
             _userRepository = userRepository;
             _jwtHandler = jwtHandler;
+            _mapper = mapper;
+        }
+
+        public async Task<AccountDTO> GetAccountAsync(Guid UserId)
+        {
+            var user = await _userRepository.GetAsync(UserId);
+            if (user == null)
+                throw new Exception($"User with id: '{UserId}' does not exist.");
+
+            return _mapper.Map<AccountDTO>(user);
         }
 
         public async Task RegisterAsync(Guid UserId, string Email, string Name, string Password, string Role = "user")

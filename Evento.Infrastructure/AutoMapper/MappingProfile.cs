@@ -16,6 +16,7 @@ namespace Evento.Infrastructure.AutoMapper
                 );
             CreateMap<Event, EventDetailsDTO>();
             CreateMap<Ticket, TicketDTO>();
+            CreateMap<Account, AccountDTO>();
         }
     }
 }

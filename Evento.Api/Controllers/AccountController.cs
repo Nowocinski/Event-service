@@ -1,13 +1,13 @@
 ﻿using Evento.Infrastructure.Commends.Users;
 using Evento.Infrastructure.Services.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace Evento.Api.Controllers
 {
-    [Route("api/[controller]")]
-    public class AccountController : Controller
+    public class AccountController : ApiControllerBase
     {
         private readonly IUserService _userService;
 
@@ -18,10 +18,9 @@ namespace Evento.Api.Controllers
 
         // GET: api/account - Pobranie danych konta
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> GetAccount()
-        {
-            throw new NotImplementedException();
-        }
+            => Json(await _userService.GetAccountAsync(UserId));
 
         // GET: api/account/tickets - Sprawdzenie biletów użytkownika
         [HttpGet("tickets")]
