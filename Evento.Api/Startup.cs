@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Evento.Infrastructure.Settings;
+using Evento.Infrastructure.Services.User.JwtToken;
 
 namespace Evento.Api
 {
@@ -37,6 +38,7 @@ namespace Evento.Api
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IJwtHandler, JwtHandler>();
             // Poprawienie formatowania skłądni json
             services.AddMvc()
                 .AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented);
