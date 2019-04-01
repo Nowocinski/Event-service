@@ -38,7 +38,7 @@ namespace Evento.Api
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IJwtHandler, JwtHandler>();
+            services.AddSingleton<IJwtHandler, JwtHandler>();
             // Poprawienie formatowania skłądni json
             services.AddMvc()
                 .AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented);
