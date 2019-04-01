@@ -16,10 +16,16 @@ namespace Evento.Infrastructure.Repositories
         }
 
         public async Task<Account> GetAsync(Guid Id)
-            => await _context.Accounts.SingleOrDefaultAsync(x => x.Id == Id);
+        {
+            var user = await _context.Accounts.SingleOrDefaultAsync(x => x.Id == Id);
+            return await Task.FromResult(user);
+        }
 
         public async Task<Account> GetAsync(string Email)
-            => await _context.Accounts.SingleOrDefaultAsync(x => x.Name.ToLower() == Email.ToLower());
+        {
+            var user = await _context.Accounts.SingleOrDefaultAsync(x => x.Email == Email);
+            return await Task.FromResult(user);
+        }
 
         public async Task AddAsync(Account User)
         {

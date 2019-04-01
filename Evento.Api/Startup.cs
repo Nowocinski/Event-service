@@ -62,7 +62,7 @@ namespace Evento.Api
             // https://youtu.be/yH4GhmTPf68
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
-            services.AddIdentity<Account, IdentityRole>( option => {
+            services.AddIdentity<IdentityUser, IdentityRole>( option => {
                 option.Password.RequireDigit = false;           // wymagana cyfra
                 option.Password.RequiredLength = 6;             // wymagana długość
                 option.Password.RequireNonAlphanumeric = false; // wymagane znaki alfanumeryczne

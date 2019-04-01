@@ -31,7 +31,10 @@ namespace Evento.Infrastructure.Services.User
         public async Task<TokenDTO> LoginAsync(string Email, string Password)
         {
             var user = await _userRepository.GetAsync(Email);
-            if (user == null || user.Password != Password)
+            if (user == null) 
+                throw new Exception("Invalid credentials.");
+
+            if (user.Password != Password)
                 throw new Exception("Invalid credentials.");
 
             var jwt = _jwtHandler.CreateToken(user.Id, user.Role);

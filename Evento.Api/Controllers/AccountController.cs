@@ -41,7 +41,7 @@ namespace Evento.Api.Controllers
 
         // POST: api/account/login
         [HttpPost("login")]
-        public async Task<ActionResult> Login(Login command)
+        public async Task<ActionResult> Login([FromBody] Login command)
             => Json(await _userService.LoginAsync(command.Email, command.Password));
     }
 }
