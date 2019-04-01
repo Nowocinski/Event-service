@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Evento.Infrastructure.DTO;
+using System;
 using System.Threading.Tasks;
 
 namespace Evento.Infrastructure.Services.User
@@ -6,6 +7,6 @@ namespace Evento.Infrastructure.Services.User
     public interface IUserService
     {
         Task RegisterAsync(Guid UserId, string Email, string Name, string Password, string Role = "user");
-        Task LoginAsync(string Email, string Password);
+        Task<TokenDTO> LoginAsync(string Email, string Password);
     }
 }

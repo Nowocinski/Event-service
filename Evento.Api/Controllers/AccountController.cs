@@ -42,8 +42,6 @@ namespace Evento.Api.Controllers
         // POST: api/account/login
         [HttpPost("login")]
         public async Task<ActionResult> Login(Login command)
-        {
-            throw new NotImplementedException();
-        }
+            => Json(await _userService.LoginAsync(command.Email, command.Password));
     }
 }
