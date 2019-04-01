@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Evento.Infrastructure.Settings;
 
 namespace Evento.Api
 {
@@ -57,6 +58,8 @@ namespace Evento.Api
             // Konfiguracja Jwt token
             // https://go.microsoft.com/fwlink/?linkid=845470
             // https://youtu.be/yH4GhmTPf68
+            services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
+
             services.AddIdentity<Account, IdentityRole>( option => {
                 option.Password.RequireDigit = false;           // wymagana cyfra
                 option.Password.RequiredLength = 6;             // wymagana długość
