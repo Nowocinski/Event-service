@@ -32,7 +32,6 @@ namespace Evento.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             // Wstrzykiwanie zależności
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
@@ -59,36 +58,29 @@ namespace Evento.Api
 
             // Konfiguracja Jwt token
             // https://go.microsoft.com/fwlink/?linkid=845470
-            // https://youtu.be/yH4GhmTPf68
-            services.AddAuthentication();
+            // https://bit.ly/2Rg7UIj
+
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
-            services.AddIdentity<IdentityUser, IdentityRole>( option => {
-                option.Password.RequireDigit = false;           // wymagana cyfra
-                option.Password.RequiredLength = 6;             // wymagana długość
-                option.Password.RequireNonAlphanumeric = false; // wymagane znaki alfanumeryczne
-                option.Password.RequireUppercase = false;       // wymagane wielkie litery
-                option.Password.RequireLowercase = false;       // wymagane małe litery
-            }).AddEntityFrameworkStores<DataBaseContext>()
-            .AddDefaultTokenProviders();
-
-            services.AddAuthentication(option =>
+            services.AddAuthentication(x =>
             {
-                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(option => {
-                option.SaveToken = true;
-                option.RequireHttpsMetadata = true;
-                option.TokenValidationParameters = new TokenValidationParameters()
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateActor = true,
-                    ValidAudience = Configuration["Jet:Site"],  // Strony mogące korzystać z tego serwera
-                    ValidIssuer = Configuration["Jwt:Site"],    // Podmiot zdolny do wystawienia tokenu
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SigningKey"]))
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SigningKey"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
                 };
             });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -100,9 +92,8 @@ namespace Evento.Api
                 app.UseHsts();
 
             app.UseHttpsRedirection();
-            app.UseMvc();
-
             app.UseAuthentication();
+            app.UseMvc();
         }
     }
 }
