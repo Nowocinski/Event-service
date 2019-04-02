@@ -75,8 +75,8 @@ namespace Evento.Api
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SigningKey"])),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateIssuer = false,     // Podmiot zdolny do wystawienia tokenu. UWAGA: ValidateIssuer != ValidIssuer
+                    ValidateAudience = false    // Strony mogące kożystać z serwisu. UWAGA: ValidateAudience != ValidAudience
                 };
             });
 
