@@ -8,11 +8,18 @@ namespace Evento.Core.Domain
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Event>()
+            /*modelBuilder.Entity<Event>()
             .HasMany(a => a.Tickets)            // Lista biletów w wydarzeniu
             .WithOne(b => b.Relation)           // Relacja biletu do wydarzenia
 
-            .OnDelete(DeleteBehavior.Restrict); // Usuwanie wydarzeń wraz z listą biletów
+            .OnDelete(DeleteBehavior.Restrict); // Usuwanie wydarzeń wraz z listą biletów*/
+
+            modelBuilder.Entity<Event>()
+            .HasMany(p => p.Tickets)
+            .WithOne(b => b.Relation)
+            .HasForeignKey(p => p.EventId)
+            .OnDelete(DeleteBehavior.Restrict);
+            //.HasConstraintName("ForeignKey_Post_Blog");
         }
 
         public DbSet<Account> Accounts { get; set; }

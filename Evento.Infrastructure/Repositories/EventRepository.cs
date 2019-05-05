@@ -21,11 +21,6 @@ namespace Evento.Infrastructure.Repositories
         //=> await Task.FromResult(_context.Events.SingleOrDefault(x => x.Id == Id));
         {
             var @event = await _context.Events.SingleOrDefaultAsync(x => x.Id == Id);
-            if(@event != null)
-            {
-                var ticets = await _context.Tickets.Where(x => x.EventId == @event.Id).ToListAsync();
-                @event.LoadTickets(ticets);
-            }
             return await Task.FromResult(@event);
         }
 
@@ -33,11 +28,6 @@ namespace Evento.Infrastructure.Repositories
         //=> await Task.FromResult(_context.Events.SingleOrDefault(x => x.Name.ToLower() == Name.ToLower()));
         {
             var @event = await _context.Events.SingleOrDefaultAsync(x => x.Name.ToLower() == Name.ToLower());
-            if(@event != null)
-            {
-                var ticets = await _context.Tickets.Where(x => x.EventId == @event.Id).ToListAsync();
-                @event.LoadTickets(ticets);
-            }
             return await Task.FromResult(@event);
         }
 
