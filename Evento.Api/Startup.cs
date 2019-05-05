@@ -12,7 +12,6 @@ using Evento.Infrastructure.Repositories;
 using Evento.Infrastructure.Services;
 using Newtonsoft.Json;
 using Evento.Infrastructure.Services.User;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -21,6 +20,7 @@ using Evento.Infrastructure.Services.User.JwtToken;
 using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Evento.Infrastructure.IoC.Modules;
 
 namespace Evento.Api
 {
@@ -91,6 +91,7 @@ namespace Evento.Api
             // Konfiguracja AutoFac'a
             var builder = new ContainerBuilder();
             builder.Populate(services);
+            builder.RegisterModule<CommandModule>();
             ApplicationContainer = builder.Build();
 
             return new AutofacServiceProvider(ApplicationContainer);

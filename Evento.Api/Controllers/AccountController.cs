@@ -1,4 +1,5 @@
-﻿using Evento.Infrastructure.Commends.Users;
+﻿using Evento.Infrastructure.Commends;
+using Evento.Infrastructure.Commends.Users;
 using Evento.Infrastructure.Services.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace Evento.Api.Controllers
     public class AccountController : ApiControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ICommandDispatcher _commandDispatcher;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, ICommandDispatcher commandDispatcher)
         {
             _userService = userService;
+            _commandDispatcher = commandDispatcher;
         }
 
         // GET: api/account - Pobranie danych konta
@@ -33,7 +36,7 @@ namespace Evento.Api.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Post([FromBody] Register command)
         {
-            await _userService.RegisterAsync(Guid.NewGuid(), command.Email, command.Name, command.Password, command.Role);
+            await _commandDispatcher.DispatchAsync(command);
 
             return Created("/account", null);
         }
