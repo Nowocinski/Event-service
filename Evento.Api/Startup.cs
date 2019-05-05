@@ -18,19 +18,22 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Evento.Infrastructure.Settings;
 using Evento.Infrastructure.Services.User.JwtToken;
+using System;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 
 namespace Evento.Api
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+        public IContainer ApplicationContainer { get; private set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Wstrzykiwanie zależności
             services.AddScoped<IEventRepository, EventRepository>();
@@ -84,9 +87,16 @@ namespace Evento.Api
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            // Konfiguracja AutoFac'a
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+            ApplicationContainer = builder.Build();
+
+            return new AutofacServiceProvider(ApplicationContainer);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
@@ -97,6 +107,7 @@ namespace Evento.Api
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
+            appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }
     }
 }
