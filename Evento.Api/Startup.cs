@@ -42,6 +42,9 @@ namespace Evento.Api
             services.AddMvc()
                 .AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented);
 
+            // Dodanie policy
+            services.AddAuthorization(x => x.AddPolicy("HasAdminRole", p => p.RequireRole("admin")));
+
             // Konfiguracja AutoMappera
             var mappingConfig = new MapperConfiguration(mc =>
             {
