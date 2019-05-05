@@ -80,11 +80,6 @@ namespace Evento.Api
                 };
             });
 
-            // Dodanie polityki bezpieczeństwa
-            services.AddAuthorization(x => 
-                x.AddPolicy("HasAdminRole", p => p.RequireRole("admin"))
-            );
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
