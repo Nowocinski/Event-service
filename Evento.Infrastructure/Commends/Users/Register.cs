@@ -2,7 +2,7 @@
 
 namespace Evento.Infrastructure.Commends.Users
 {
-    public class Register
+    public class Register : ICommand
     {
         public Guid UserId { get; set; }
         public string Email { get; set; }

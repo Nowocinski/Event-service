@@ -2,7 +2,7 @@
 
 namespace Evento.Infrastructure.Commends.Events
 {
-    public class CreateEvent
+    public class CreateEvent : ICommand
     {
         public Guid EventId { get; set; }
         public string Name { get; set; }
