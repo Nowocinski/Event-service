@@ -21,6 +21,7 @@ using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Evento.Infrastructure.IoC.Modules;
+using Evento.Api.Framework;
 
 namespace Evento.Api
 {
@@ -105,6 +106,7 @@ namespace Evento.Api
             else
                 app.UseHsts();
 
+            app.UserExceptionHandler();
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
