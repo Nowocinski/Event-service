@@ -22,6 +22,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Evento.Infrastructure.IoC.Modules;
 using Evento.Api.Framework;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Evento.Api
 {
@@ -87,6 +88,20 @@ namespace Evento.Api
                 };
             });
 
+            // Konfiguracja Swagger'a
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "Evento service",
+                    Description = "Evento service",
+                    TermsOfService = "None",
+                    Contact = new Contact() { Name = "Talking Dotnet", Email = "contact@talkingdotnet.com", Url = "www.talkingdotnet.com" }
+                });
+                c.CustomSchemaIds(x => x.FullName);
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // Konfiguracja AutoFac'a
@@ -110,6 +125,11 @@ namespace Evento.Api
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
             appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }
     }
