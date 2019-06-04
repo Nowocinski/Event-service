@@ -2,12 +2,14 @@
 using Evento.Infrastructure.Commends.Users;
 using Evento.Infrastructure.Services.User;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace Evento.Api.Controllers
 {
+    [EnableCors("Origins")]
     public class AccountController : ApiControllerBase
     {
         private readonly IUserService _userService;

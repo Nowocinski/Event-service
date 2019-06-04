@@ -2,12 +2,14 @@
 using Evento.Infrastructure.DTO;
 using Evento.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace Evento.Api.Controllers
 {
+    [EnableCors("Origins")]
     public class EventsController : ApiControllerBase
     {
         private readonly IEventService _eventServices;

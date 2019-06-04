@@ -28,6 +28,7 @@ namespace Evento.Api
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "Origins";
         public IConfiguration Configuration { get; }
         public IContainer ApplicationContainer { get; private set; }
         public Startup(IConfiguration configuration)
@@ -102,7 +103,23 @@ namespace Evento.Api
                 c.CustomSchemaIds(x => x.FullName);
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            // CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                config =>
+                {
+                    config
+                        .WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(jsonOptions =>
+            {
+                jsonOptions.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+            });
 
             // Konfiguracja AutoFac'a
             var builder = new ContainerBuilder();
@@ -121,6 +138,7 @@ namespace Evento.Api
             else
                 app.UseHsts();
 
+            app.UseCors(MyAllowSpecificOrigins);
             app.UserExceptionHandler();
             app.UseHttpsRedirection();
             app.UseAuthentication();
